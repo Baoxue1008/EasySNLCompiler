@@ -5,7 +5,7 @@ tokens = []
 
 change = {}
 
-delimiter = r'+-*/();[]< '
+delimiter = '+-*/();[]< '
 
 lexicalInf = ['PROGRAM','PROCEDURE','TYPE','VAR','IF',
 	'THEN',	'ELSE',	'FI','WHILE','DO',
@@ -52,10 +52,10 @@ def getToken(state,buf,line):
     if state == 2: return (line,'INTC',int(buf))
     if state == 3: return (line,deliName[buf],None)
     if state == 5: return (line,'ASSIGN',None)
-    if state == 8: return (line,'UNDERANGE',None)
-    if state == 10: return (line,'CHARC',buf)
-    if state == 11: return (line,'ERROR',None)
-    if state == 12: return (line,'DOT',None)
+    if state == 8: return (line,'DOT',None)
+    if state == 9: return (line,'UNDERANGE',None)
+    if state == 12: return (line,'CHARC',buf)
+    if state == 13: return (line,'ERROR',None)
 
 
 
@@ -79,14 +79,11 @@ def main(dir):
     text = open(dir).read()
     curState = 0
     linenum = 1
-    nextlinenum = 0
     buf = []
     text = text + '#'
     for ch in text:
-        if ch == '\t': ch = ' '
-        if ch in '\n':
-            nextlinenum += 1
-            continue
+        tch = ch
+        if ch in '\t\n': ch = ' '
         chtype = getType(ch)
         nextState = change[curState][chtype]
         if nextState == 0:
@@ -98,13 +95,11 @@ def main(dir):
         else:
             buf.append(ch)
             curState = nextState
-        linenum += nextlinenum
-        nextlinenum = 0
-        if curState == 12:
-            tokens.append((linenum,'DOT',None))
-        print linenum,curState,buf,ch
+        if tch == '\n': linenum += 1
         if ch == '#':
             tokens.append((linenum,'EOF',None))
-    print tokens
+    return tokens
 
-main('test.txt')
+t  = main('test.txt')
+for i in t:
+    print t

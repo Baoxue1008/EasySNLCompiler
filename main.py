@@ -102,4 +102,4 @@ def main(dir):
 
 t  = main('test.txt')
 for i in t:
-    print t
+    print i

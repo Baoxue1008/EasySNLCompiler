@@ -5,7 +5,7 @@ tokens = []
 
 change = {}
 
-delimiter = '+-*/();[]< '
+delimiter = '+-*/();[]<, '
 
 lexicalInf = ['PROGRAM','PROCEDURE','TYPE','VAR','IF',
 	'THEN',	'ELSE',	'FI','WHILE','DO',

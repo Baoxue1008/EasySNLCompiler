@@ -1,0 +1,203 @@
+Program::=ProgramHead DeclarePart ProgramBody
+
+ProgramHead::=program  ProgramName
+
+ProgramName::=ID
+
+DeclarePart::=TypeDecpart VarDecpart ProcDecpart
+
+TypeDecpart::= #
+
+               | TypeDec
+
+TypeDec::=type TypeDecList
+
+TypeDecList::=TypeId = TypeName ; TypeDecMore
+
+TypeDecMore::= #
+
+          | TypeDecList
+
+TypeId::=ID
+
+TypeName::=BaseName
+
+          | StructureType
+
+          | ID
+
+BaseName::=integer
+
+           | char
+
+StructureType::=ArrayType
+
+             | RecType
+
+ArrayType::=array [ Low .. Top ] of  BaseName
+
+Low::=INTC  
+
+Top::=INTC    
+
+RecType::=record  FieldDecList  end
+
+FieldDecList::=BaseType  IdList ; FieldDecMore
+
+             |ArrayType  IdList ; FieldDecMore
+
+FieldDecMore::= #
+
+            | FieldDecList
+
+IdList::=ID IdMore
+
+IdMore::=#
+
+         |, IdList
+
+VarDecpart::= #
+
+             |VarDec
+
+VarDec::=var VarDecList
+
+VarDecList::=TypeName VarIdList ; VarDecMore
+
+VarDecMore::=#
+               | VarDecList
+
+VarIdList::=id VarIdMore
+
+VarIdMore::= #
+
+             | , VarIdList
+
+ProcDecpart::= #
+
+             | ProcDec
+
+ProcDec::=procedure ProcName ( ParamList ) ; ProcDecPart ProcBody ProcDecMore
+
+ProcDecMore::= #
+
+              | ProcDec
+
+ProcName::=ID
+
+ParamList::= #
+
+           | ParamDecList
+
+ParamDecList::=Param  ParamMore
+
+ParamMore::= #
+
+             | ; ParamDecList
+
+Param::=TypeName  FormList
+
+        | var TypeName  FormList
+
+FormList::=ID FidMore
+
+FidMore::= #
+
+          |, FormList
+
+ProcDecPart::=DeclarePart
+
+ProcBody::=ProgramBody
+
+ProgramBody::=begin StmList  end
+
+StmList::=Stm StmMore
+
+StmMore::= #
+
+          |; StmList
+
+Stm ::=  ConditionalStm
+         | LoopStm
+         | InputStm
+
+         | OutputStm
+
+         | ReturnStm
+
+         | ID AssCall
+
+AssCall::=AssignmentRest
+         | CallStmRest
+
+AssignmentRest::=VariMore := Exp
+
+ConditionalStm::=if RelExp then StmList else StmList fi
+
+LoopStm::=while RelExp do StmList endwh
+
+InputStm::=read ( InVar ) 
+
+InVar::=ID
+
+OutputStm::=write ( Exp )
+
+ReturnStm::=return ( Exp )
+
+CallStmRest::=( ActParamList )
+
+ActParamList::= #
+
+              |Exp ActParamMore
+
+ActParamMore::= #
+
+              |; ActParamList
+
+RelExp::=Exp OtherRelE
+
+OtherRelE::=CmpOp Exp
+
+Exp::=Term OtherTerm
+
+OtherTerm::= #
+
+            |AddOp Exp
+
+Term::=Factor OtherFactor
+
+OtherFactor::= #
+
+            |MultOp  Term
+
+Factor::= ( Exp )
+
+       | INTC
+
+       | Variable
+
+Variable::=ID VariMore
+
+VariMore::= #
+
+          |[ Exp ]
+
+          | . FieldVar
+FieldVar::=ID FieldVarMore
+
+FieldVarMore::= #
+
+             |[ Exp ]
+
+CmpOp::=<
+
+                  | =
+
+AddOp::=+
+
+                  |-
+
+MultOp::=*
+
+                   |/
+

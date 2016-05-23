@@ -1,5 +1,5 @@
 __author__ = 'baoli1100'
-import latex
+import scanner
 import copy
 from collections import deque
 tokens = []
@@ -180,7 +180,7 @@ def printTree(nodeid,deep):
         printTree(child,deep+1)
 
 
-tokens = latex.getToken(r'test/t2.txt')
+tokens = scanner.getToken(r'test/t2.txt')
 print 'Parser start!'
 parser()
 
